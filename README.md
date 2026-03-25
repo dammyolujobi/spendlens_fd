@@ -1,29 +1,29 @@
-# SpendLens 💰
+# SpendLens
 
 A modern, intelligent spending tracker that syncs with your Gmail inbox to automatically categorize and monitor your financial transactions. Built with Next.js and featuring a beautiful glass morphism design inspired by Apple's UI aesthetic.
 
 ## Features
 
-✨ **Smart Transaction Detection**
+**Smart Transaction Detection**
 - Automatically reads transaction emails from Gmail
 - Intelligently categorizes transactions as credit or debit
 - Detects and excludes failed payments
 - Nigerian Naira (₦) currency support
 
-🎨 **Modern Design**
+**Modern Design**
 - Apple-inspired glass morphism UI
 - Dark and light mode support with system preference detection
 - Responsive design for desktop and mobile
 - Smooth transitions and hover effects
 
-📊 **Analytics & Insights**
+**Analytics & Insights**
 - Dashboard with summary cards (Total Spent/Received)
 - Interactive spending breakdown by vendor
 - Transaction history with filtering (All/Credit/Debit)
 - Top vendors analysis
 - Detailed analytics page
 
-🌓 **Theme Support**
+**Theme Support**
 - Light mode, dark mode, and system preference detection
 - Persistent theme preference
 - Built with shadcn/ui components
@@ -187,10 +187,10 @@ npm run dev
 
 ## Performance Features
 
-- ⚡ Turbopack for fast development builds
-- 🚀 Server Components with streaming (Next.js 16)
-- 📦 Optimized bundle size with tree-shaking
-- 🎯 Automatic image optimization
+- Turbopack for fast development builds
+- Server Components with streaming (Next.js 16)
+- Optimized bundle size with tree-shaking
+- Automatic image optimization
 
 ## Browser Support
 
@@ -201,13 +201,13 @@ npm run dev
 
 ## Future Enhancements
 
-- 📱 Mobile app version
-- 💾 Data export (CSV, PDF)
-- 🔔 Transaction notifications
-- 📈 Advanced charts and graphs
-- 🏷️ Custom transaction tagging
-- 💳 Multi-account support
-- 📅 Recurring transaction detection
+- Mobile app version
+- Data export (CSV, PDF)
+- Transaction notifications
+- Advanced charts and graphs
+- Custom transaction tagging
+- Multi-account support
+- Recurring transaction detection
 
 ## Contributing
 
@@ -228,4 +228,4 @@ For issues, questions, or feedback, please open an issue on the GitHub repositor
 
 ---
 
-**Built with ❤️ for smarter spending**
+Built with care for smarter spending
