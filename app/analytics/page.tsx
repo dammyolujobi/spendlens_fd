@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import DateRangeFilter from '@/components/date-range-filter'
 import { Skeleton } from '@/components/ui/skeleton'
-import { detectTransactionType } from '@/lib/utils'
+import { detectTransactionType, filterTransactionsByDateRange, DateRangeType } from '@/lib/utils'
 
 interface Transaction {
   from: string
@@ -17,6 +18,7 @@ export default function AnalyticsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [dateRange, setDateRange] = useState<DateRangeType>('month')
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -40,20 +42,22 @@ export default function AnalyticsPage() {
     fetchTransactions()
   }, [])
 
-  const totalDebit = transactions.reduce((sum, t) => {
+  const filteredTransactions = filterTransactionsByDateRange(transactions, dateRange)
+
+  const totalDebit = filteredTransactions.reduce((sum, t) => {
     if (t.type !== 'debit') return sum
     const amount = parseFloat(t.amount.replace(/[^0-9.]/g, ''))
     return sum + (isNaN(amount) ? 0 : amount)
   }, 0)
 
-  const totalCredit = transactions.reduce((sum, t) => {
+  const totalCredit = filteredTransactions.reduce((sum, t) => {
     if (t.type !== 'credit') return sum
     const amount = parseFloat(t.amount.replace(/[^0-9.]/g, ''))
     return sum + (isNaN(amount) ? 0 : amount)
   }, 0)
 
   // Top vendors
-  const vendorStats = transactions.reduce((acc, t) => {
+  const vendorStats = filteredTransactions.reduce((acc, t) => {
     const vendor = t.from
     const amount = parseFloat(t.amount.replace(/[^0-9.]/g, ''))
     if (!acc[vendor]) {
@@ -76,6 +80,8 @@ export default function AnalyticsPage() {
           <p className="text-gray-600 dark:text-gray-400">Insights into your spending</p>
         </div>
 
+        <DateRangeFilter selectedRange={dateRange} onRangeChange={setDateRange} />
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <Card className="bg-gradient-to-br from-red-50 to-red-50/50 dark:from-red-950/20 dark:to-red-950/10 border-red-200/30 dark:border-red-900/30">
             <CardHeader className="pb-3">
@@ -87,7 +93,7 @@ export default function AnalyticsPage() {
               ) : (
                 <>
                   <div className="text-3xl font-bold text-red-600 dark:text-red-400">₦{totalDebit.toFixed(2)}</div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">{transactions.filter(t => t.type === 'debit').length} transactions</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">{filteredTransactions.filter(t => t.type === 'debit').length} transactions</p>
                 </>
               )}
             </CardContent>
@@ -103,7 +109,7 @@ export default function AnalyticsPage() {
               ) : (
                 <>
                   <div className="text-3xl font-bold text-green-600 dark:text-green-400">₦{totalCredit.toFixed(2)}</div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">{transactions.filter(t => t.type === 'credit').length} transactions</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">{filteredTransactions.filter(t => t.type === 'credit').length} transactions</p>
                 </>
               )}
             </CardContent>

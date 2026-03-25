@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { formatDate, detectTransactionType } from '@/lib/utils'
+import { formatDate, detectTransactionType, filterTransactionsByDateRange, DateRangeType } from '@/lib/utils'
+import DateRangeFilter from '@/components/date-range-filter'
 import { ArrowDownLeft, ArrowUpRight } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -19,6 +20,7 @@ export default function TransactionsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [filter, setFilter] = useState<'all' | 'credit' | 'debit'>('all')
+  const [dateRange, setDateRange] = useState<DateRangeType>('month')
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -42,7 +44,8 @@ export default function TransactionsPage() {
     fetchTransactions()
   }, [])
 
-  const filtered = transactions.filter(t => {
+  const dateFilteredTransactions = filterTransactionsByDateRange(transactions, dateRange)
+  const filtered = dateFilteredTransactions.filter(t => {
     if (filter === 'all') return true
     return t.type === filter
   })
@@ -54,6 +57,8 @@ export default function TransactionsPage() {
           <h1 className="text-3xl font-bold mb-2">Transactions</h1>
           <p className="text-gray-600 dark:text-gray-400">View all your transactions</p>
         </div>
+
+        <DateRangeFilter selectedRange={dateRange} onRangeChange={setDateRange} />
 
         <Card className="mb-6">
           <CardHeader>

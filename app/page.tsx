@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react'
 import DashboardHeader from '@/components/dashboard/header'
 import SummaryCards from '@/components/dashboard/summary-cards'
 import SpendingChart from '@/components/dashboard/spending-chart'
+import DateRangeFilter from '@/components/date-range-filter'
 import { Skeleton } from '@/components/ui/skeleton'
-import { detectTransactionType } from '@/lib/utils'
+import { detectTransactionType, filterTransactionsByDateRange, DateRangeType } from '@/lib/utils'
 
 interface Transaction {
   from: string
@@ -19,6 +20,7 @@ export default function Page() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [dateRange, setDateRange] = useState<DateRangeType>('month')
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -43,6 +45,8 @@ export default function Page() {
     fetchTransactions()
   }, [])
 
+  const filteredTransactions = filterTransactionsByDateRange(transactions, dateRange)
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-white to-blue-50/30 dark:from-black dark:to-blue-950/20">
       <DashboardHeader />
@@ -65,9 +69,10 @@ export default function Page() {
           </div>
         ) : (
           <>
-            <SummaryCards transactions={transactions} />
+            <DateRangeFilter selectedRange={dateRange} onRangeChange={setDateRange} />
+            <SummaryCards transactions={filteredTransactions} />
             <div className="mt-8">
-              <SpendingChart transactions={transactions} />
+              <SpendingChart transactions={filteredTransactions} />
             </div>
           </>
         )}
