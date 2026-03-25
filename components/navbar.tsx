@@ -1,0 +1,73 @@
+'use client'
+
+import { useTheme } from 'next-themes'
+import { Moon, Sun } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
+
+export default function Navbar() {
+  const { theme, setTheme } = useTheme()
+  const pathname = usePathname()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const isActive = (path: string) => pathname === path
+
+  const navItems = [
+    { label: 'Dashboard', href: '/' },
+    { label: 'Transactions', href: '/transactions' },
+    { label: 'Analytics', href: '/analytics' },
+    { label: 'Settings', href: '/settings' },
+  ]
+
+  return (
+    <nav className="sticky top-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-white/10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">SL</span>
+            </div>
+            <span className="font-semibold text-lg hidden sm:inline">SpendLens</span>
+          </Link>
+
+          <div className="flex items-center gap-1 sm:gap-8">
+            <div className="hidden sm:flex gap-1">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                    isActive(item.href)
+                      ? 'bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100/50 dark:hover:bg-white/5'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="relative p-2 rounded-lg bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 transition-all"
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-5 h-5 text-yellow-500" />
+                ) : (
+                  <Moon className="w-5 h-5 text-gray-600" />
+                )}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </nav>
+  )
+}

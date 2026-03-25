@@ -1,0 +1,19 @@
+# Dependencies
+node_modules
+
+# Build outputs
+.next
+out
+dist
+build
+
+# Generated files
+.turbo
+
+# Lock files (optional, depends on your preference)
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Config files
+next.config.*

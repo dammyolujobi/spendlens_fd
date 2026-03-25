@@ -1,0 +1,20 @@
+# Dependencies
+node_modules
+
+# Build outputs
+.next
+out
+dist
+build
+
+# Generated files
+*.generated.*
+.turbo
+
+# Config files
+next.config.*
+postcss.config.*
+tailwind.config.*
+
+# Test files (optional, based on your setup)
+coverage
