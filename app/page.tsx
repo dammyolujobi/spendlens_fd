@@ -51,27 +51,26 @@ export default function Page() {
     <main className="min-h-screen bg-gradient-to-br from-white to-blue-50/30 dark:from-black dark:to-blue-950/20">
       <DashboardHeader />
       
-      <div className="px-4 sm:px-6 lg:px-8 py-8 max-w-7xl mx-auto">
+      <div className="px-4 sm:px-6 lg:px-8 py-12 max-w-7xl mx-auto">
         {loading ? (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[...Array(2)].map((_, i) => (
-                <Skeleton key={i} className="h-32 rounded-2xl" />
+                <Skeleton key={i} className="h-40 rounded-2xl" />
               ))}
             </div>
             <Skeleton className="h-96 rounded-2xl" />
-            <Skeleton className="h-96 rounded-2xl" />
           </div>
         ) : error ? (
-          <div className="text-center py-12">
-            <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">Please try again or check your API connection.</p>
+          <div className="text-center py-16">
+            <p className="text-red-600 dark:text-red-400 mb-4 text-lg">Error loading transactions</p>
+            <p className="text-gray-600 dark:text-gray-400">Please ensure your API connection is working.</p>
           </div>
         ) : (
           <>
             <DateRangeFilter selectedRange={dateRange} onRangeChange={setDateRange} />
             <SummaryCards transactions={filteredTransactions} />
-            <div className="mt-8">
+            <div className="mt-10 animate-fade-in-up">
               <SpendingChart transactions={filteredTransactions} />
             </div>
           </>

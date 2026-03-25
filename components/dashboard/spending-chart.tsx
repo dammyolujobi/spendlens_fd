@@ -46,21 +46,23 @@ export default function SpendingChart({ transactions }: Props) {
     }))
 
   return (
-    <Card className="bg-card border-border">
-      <CardHeader>
-        <CardTitle>Spending by Vendor</CardTitle>
+    <Card className="bg-card border-border transition-smooth">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-lg font-semibold">Spending by Vendor</CardTitle>
       </CardHeader>
       <CardContent>
         {chartData.length > 0 ? (
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={chartData}>
-              <XAxis dataKey="name" stroke="#9CA3AF" style={{ fontSize: '12px' }} />
-              <YAxis stroke="#9CA3AF" style={{ fontSize: '12px' }} />
-              <Bar dataKey="value" fill="#3B82F6" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+          <div className="w-full animate-fade-in-up">
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={chartData}>
+                <XAxis dataKey="name" stroke="#9CA3AF" style={{ fontSize: '12px' }} />
+                <YAxis stroke="#9CA3AF" style={{ fontSize: '12px' }} />
+                <Bar dataKey="value" fill="#3B82F6" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         ) : (
-          <div className="h-80 flex items-center justify-center text-muted-foreground">
+          <div className="h-96 flex items-center justify-center text-muted-foreground">
             No transaction data available
           </div>
         )}

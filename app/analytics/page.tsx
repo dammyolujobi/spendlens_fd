@@ -74,57 +74,61 @@ export default function AnalyticsPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-white to-blue-50/30 dark:from-black dark:to-blue-950/20">
-      <div className="px-4 sm:px-6 lg:px-8 py-8 max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Analytics</h1>
-          <p className="text-gray-600 dark:text-gray-400">Insights into your spending</p>
+      <div className="px-4 sm:px-6 lg:px-8 py-12 max-w-7xl mx-auto">
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold mb-2">Analytics</h1>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">Deep insights into your spending patterns</p>
         </div>
 
         <DateRangeFilter selectedRange={dateRange} onRangeChange={setDateRange} />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <Card className="bg-gradient-to-br from-red-50 to-red-50/50 dark:from-red-950/20 dark:to-red-950/10 border-red-200/30 dark:border-red-900/30">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-red-600 dark:text-red-400">Total Spent</CardTitle>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 animate-fade-in-up">
+          <Card className="bg-gradient-to-br from-red-50 to-red-50/50 dark:from-red-950/20 dark:to-red-950/10 border-red-200/30 dark:border-red-900/30 hover:from-red-100/60 hover:to-red-100/40 dark:hover:from-red-950/30 dark:hover:to-red-950/20 transition-smooth group">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-semibold text-red-700 dark:text-red-300 group-hover:text-red-800 dark:group-hover:text-red-200 transition-colors">Total Spent</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-3">
               {loading ? (
                 <Skeleton className="h-10 w-32 mb-2" />
               ) : (
                 <>
-                  <div className="text-3xl font-bold text-red-600 dark:text-red-400">₦{totalDebit.toFixed(2)}</div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">{filteredTransactions.filter(t => t.type === 'debit').length} transactions</p>
+                  <div>
+                    <div className="text-4xl font-bold text-red-600 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-red-300 transition-colors">₦{totalDebit.toFixed(2)}</div>
+                    <p className="text-sm text-red-600/70 dark:text-red-400/70 mt-2">{filteredTransactions.filter(t => t.type === 'debit').length} transactions</p>
+                  </div>
                 </>
               )}
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-50 to-green-50/50 dark:from-green-950/20 dark:to-green-950/10 border-green-200/30 dark:border-green-900/30">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-green-600 dark:text-green-400">Total Received</CardTitle>
+          <Card className="bg-gradient-to-br from-green-50 to-green-50/50 dark:from-green-950/20 dark:to-green-950/10 border-green-200/30 dark:border-green-900/30 hover:from-green-100/60 hover:to-green-100/40 dark:hover:from-green-950/30 dark:hover:to-green-950/20 transition-smooth group">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-semibold text-green-700 dark:text-green-300 group-hover:text-green-800 dark:group-hover:text-green-200 transition-colors">Total Received</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-3">
               {loading ? (
                 <Skeleton className="h-10 w-32 mb-2" />
               ) : (
                 <>
-                  <div className="text-3xl font-bold text-green-600 dark:text-green-400">₦{totalCredit.toFixed(2)}</div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">{filteredTransactions.filter(t => t.type === 'credit').length} transactions</p>
+                  <div>
+                    <div className="text-4xl font-bold text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors">₦{totalCredit.toFixed(2)}</div>
+                    <p className="text-sm text-green-600/70 dark:text-green-400/70 mt-2">{filteredTransactions.filter(t => t.type === 'credit').length} transactions</p>
+                  </div>
                 </>
               )}
             </CardContent>
           </Card>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Top Vendors</CardTitle>
+        <Card className="transition-smooth animate-fade-in-up">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg font-semibold">Top Vendors</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
               <div className="space-y-4">
                 {[...Array(5)].map((_, i) => (
-                  <Skeleton key={i} className="h-12 rounded-lg" />
+                  <Skeleton key={i} className="h-12 rounded-xl" />
                 ))}
               </div>
             ) : error ? (
@@ -134,12 +138,12 @@ export default function AnalyticsPage() {
             ) : (
               <div className="space-y-3">
                 {topVendors.map(([vendor, stats]) => (
-                  <div key={vendor} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-white/5">
+                  <div key={vendor} className="flex items-center justify-between p-4 rounded-xl bg-white/40 dark:bg-white/5 border border-white/30 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10 hover:border-white/50 dark:hover:border-white/20 transition-smooth group">
                     <div>
-                      <p className="font-medium">{vendor}</p>
+                      <p className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-gray-950 dark:group-hover:text-white transition-colors">{vendor}</p>
                       <p className="text-sm text-gray-600 dark:text-gray-400">{stats.count} transactions</p>
                     </div>
-                    <p className={`text-lg font-semibold ${stats.type === 'credit' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                    <p className={`text-lg font-semibold transition-colors ${stats.type === 'credit' ? 'text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300' : 'text-red-600 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-red-300'}`}>
                       ₦{stats.total.toFixed(2)}
                     </p>
                   </div>

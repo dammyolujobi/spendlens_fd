@@ -52,28 +52,28 @@ export default function TransactionsPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-white to-blue-50/30 dark:from-black dark:to-blue-950/20">
-      <div className="px-4 sm:px-6 lg:px-8 py-8 max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Transactions</h1>
-          <p className="text-gray-600 dark:text-gray-400">View all your transactions</p>
+      <div className="px-4 sm:px-6 lg:px-8 py-12 max-w-7xl mx-auto">
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold mb-2">Transactions</h1>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">View and filter all your transactions</p>
         </div>
 
         <DateRangeFilter selectedRange={dateRange} onRangeChange={setDateRange} />
 
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Filter</CardTitle>
+        <Card className="mb-8 transition-smooth">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg font-semibold">Type Filter</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-3 flex-wrap">
               {(['all', 'credit', 'debit'] as const).map((f) => (
                 <button
                   key={f}
                   onClick={() => setFilter(f)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  className={`px-4 py-2 rounded-lg font-medium transition-smooth ${
                     filter === f
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-white/20'
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg hover:shadow-xl'
+                      : 'bg-white/50 dark:bg-white/5 border border-white/30 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:bg-white/70 dark:hover:bg-white/10'
                   }`}
                 >
                   {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -83,15 +83,15 @@ export default function TransactionsPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{filtered.length} Transactions</CardTitle>
+        <Card className="transition-smooth">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg font-semibold">{filtered.length} Transactions</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
               <div className="space-y-4">
                 {[...Array(5)].map((_, i) => (
-                  <Skeleton key={i} className="h-16 rounded-lg" />
+                  <Skeleton key={i} className="h-16 rounded-xl" />
                 ))}
               </div>
             ) : error ? (
@@ -99,14 +99,14 @@ export default function TransactionsPage() {
             ) : filtered.length === 0 ? (
               <p className="text-gray-600 dark:text-gray-400">No transactions found</p>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {filtered.map((transaction, idx) => {
                   const isCredit = transaction.type === 'credit'
                   return (
-                    <div key={idx} className="flex items-center justify-between p-4 rounded-xl bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-all">
+                    <div key={idx} className="flex items-center justify-between p-4 rounded-xl bg-white/40 dark:bg-white/5 border border-white/30 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10 hover:border-white/50 dark:hover:border-white/20 transition-smooth group">
                       <div className="flex items-center gap-3 flex-1">
-                        <div className={`flex items-center justify-center w-10 h-10 rounded-full ${
-                          isCredit ? 'bg-green-100 dark:bg-green-950' : 'bg-red-100 dark:bg-red-950'
+                        <div className={`flex items-center justify-center w-10 h-10 rounded-full transition-smooth ${
+                          isCredit ? 'bg-green-100/80 dark:bg-green-950/50 group-hover:bg-green-100 dark:group-hover:bg-green-950' : 'bg-red-100/80 dark:bg-red-950/50 group-hover:bg-red-100 dark:group-hover:bg-red-950'
                         }`}>
                           {isCredit ? (
                             <ArrowUpRight className={`w-5 h-5 ${isCredit ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`} />
@@ -115,7 +115,7 @@ export default function TransactionsPage() {
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-medium truncate">{transaction.from}</p>
+                          <p className="font-medium truncate text-gray-900 dark:text-gray-100">{transaction.from}</p>
                           <p className="text-sm text-gray-600 dark:text-gray-400 truncate">{transaction.subject}</p>
                           <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">{formatDate(transaction.date)}</p>
                         </div>
