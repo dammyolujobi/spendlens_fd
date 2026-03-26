@@ -18,21 +18,19 @@ export default function DateRangeFilter({ selectedRange, onRangeChange }: DateRa
   ]
 
   return (
-    <div className="flex flex-wrap gap-3 mb-8">
-      {ranges.map(range => (
+    <div className="inline-flex bg-white/20 dark:bg-white/10 rounded-lg p-1.5 mb-6 animate-fade-in-up">
+      {ranges.map((range, idx) => (
         <button
           key={range.value}
           onClick={() => onRangeChange(range.value)}
-          className={`px-4 py-2 rounded-lg font-medium transition-smooth relative overflow-hidden group ${
+          className={`px-6 py-2.5 text-base font-semibold transition-spring relative group ${
             selectedRange === range.value
-              ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-800'
-              : 'bg-white/50 dark:bg-white/5 border border-white/30 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:bg-white/70 dark:hover:bg-white/10 hover:border-white/50 dark:hover:border-white/20'
+              ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-md shadow-lg'
+              : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
           }`}
+          style={{ animationDelay: `${idx * 50}ms` }}
         >
-          <span className="relative z-10">{range.label}</span>
-          {selectedRange === range.value && (
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-smooth -z-10" />
-          )}
+          {range.label}
         </button>
       ))}
     </div>

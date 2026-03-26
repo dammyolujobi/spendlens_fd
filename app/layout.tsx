@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
-import Navbar from '@/components/navbar'
+import BottomNav from '@/components/navigation/bottom-nav'
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
@@ -38,9 +38,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="font-sans antialiased bg-white dark:bg-black text-black dark:text-white">
+      <body className="font-sans antialiased bg-gradient-to-br from-white to-blue-50/30 dark:bg-gradient-to-br dark:from-black dark:to-blue-950/5 text-black dark:text-white pb-24 md:pb-20">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Navbar />
+          <BottomNav />
           {children}
         </ThemeProvider>
         <Analytics />
