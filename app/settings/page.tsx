@@ -1,35 +1,35 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useTheme } from 'next-themes'
-import { Sun, Moon, Monitor, Check } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { getMicroThreshold, setMicroThreshold } from '@/lib/utils'
+import { useSettings } from '@/context/SettingsContext'
 import { useToast } from '@/components/ui/use-toast'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
 
-export default function SettingsPage() {
+function SettingsPageContent() {
   const { theme, setTheme } = useTheme()
   const { toast } = useToast()
+  const { microThreshold, setMicroThreshold } = useSettings()
   const [mounted, setMounted] = useState(false)
-  const [microThreshold, setMicroThresholdLocal] = useState<number | string>(2000)
+  const [microThresholdInput, setMicroThresholdInput] = useState<number | string>(microThreshold)
   const [showConfirmation, setShowConfirmation] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    setMicroThresholdLocal(getMicroThreshold())
-  }, [])
+    setMicroThresholdInput(microThreshold)
+  }, [microThreshold])
 
   const handleMicroThresholdChange = (value: string) => {
     // Allow empty input or numeric input only
     if (value === '' || /^\d+$/.test(value)) {
-      setMicroThresholdLocal(value === '' ? '' : parseInt(value))
+      setMicroThresholdInput(value === '' ? '' : parseInt(value))
     }
   }
 
   const handleMicroThresholdBlur = () => {
-    const numValue = typeof microThreshold === 'string' ? parseInt(microThreshold) : microThreshold
+    const numValue = typeof microThresholdInput === 'string' ? parseInt(microThresholdInput) : microThresholdInput
     if (numValue > 0) {
-      setMicroThresholdLocal(numValue)
+      setMicroThresholdInput(numValue)
       setMicroThreshold(numValue)
       setShowConfirmation(true)
       toast({
@@ -37,146 +37,145 @@ export default function SettingsPage() {
         description: `Threshold updated to ₦${numValue.toLocaleString()}`,
       })
       setTimeout(() => setShowConfirmation(false), 2000)
-    } else if (microThreshold === '') {
-      setMicroThresholdLocal(2000)
+    } else if (microThresholdInput === '') {
+      setMicroThresholdInput(2000)
       setMicroThreshold(2000)
     }
   }
 
   const themes = [
-    { value: 'light', label: 'Light', icon: Sun },
-    { value: 'dark', label: 'Dark', icon: Moon },
-    { value: 'system', label: 'System', icon: Monitor },
+    { value: 'light', label: 'Light' },
+    { value: 'dark', label: 'Dark' },
+    { value: 'system', label: 'System' },
   ]
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-white to-blue-50/30 dark:from-black dark:to-blue-950/5">
-      <div className="px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 pb-20 pt-12 w-full">
-        {/* Header */}
-        <div className="mb-16 animate-fade-in-up">
-          <h1 className="text-5xl sm:text-6xl font-bold mb-4">Settings</h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">Customize your spending experience</p>
-        </div>
-
-        <div className="space-y-12">
-          {/* Appearance Card */}
-          <Card className="bg-gradient-to-br from-white/50 to-white/30 dark:from-white/10 dark:to-white/5 backdrop-blur-xl border border-white/20 dark:border-white/10 hover:border-white/40 dark:hover:border-white/20 shadow-lg hover:shadow-2xl hover:shadow-blue-500/10 transition-spring animate-fade-in-up" style={{ animationDelay: '50ms' }}>
-            <CardHeader className="pb-8 border-b border-white/10">
-              <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">Appearance</CardTitle>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-3">Choose your preferred color scheme</p>
-            </CardHeader>
-            <CardContent className="pt-8">
-              {mounted ? (
-                <div className="space-y-6">
-                  <div className="grid grid-cols-3 gap-4">
-                    {themes.map((t, idx) => {
-                      const Icon = t.icon
-                      const isActive = theme === t.value
-                      return (
-                        <button
-                          key={t.value}
-                          onClick={() => setTheme(t.value)}
-                          className={`relative overflow-hidden p-6 rounded-2xl border transition-spring group animate-fade-in-up flex flex-col items-center gap-3 ${
-                            isActive
-                              ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-50/50 dark:from-blue-950/40 dark:to-blue-950/20 shadow-lg shadow-blue-500/20'
-                              : 'border-gray-200/50 dark:border-white/10 bg-white/40 dark:bg-white/5 hover:border-blue-300/50 dark:hover:border-blue-700/30 hover:bg-white/60 dark:hover:bg-white/10 hover:shadow-lg'
-                          }`}
-                          style={{ animationDelay: `${100 + idx * 50}ms` }}
-                        >
-                          <div className="relative z-10">
-                            <Icon 
-                              className={`w-8 h-8 transition-all duration-500 ${
-                                isActive 
-                                  ? 'text-blue-600 dark:text-blue-400 scale-110' 
-                                  : 'text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:scale-110'
-                              }`} 
-                            />
-                          </div>
-                          <span className={`text-sm font-semibold transition-all ${
-                            isActive 
-                              ? 'text-blue-600 dark:text-blue-400' 
-                              : 'text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400'
-                          }`}>
-                            {t.label}
-                          </span>
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-              ) : (
-                <div className="h-32 bg-gradient-to-r from-gray-200/40 to-gray-100/40 dark:from-white/10 dark:to-white/5 rounded-lg loading-pulse" />
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Spending Thresholds Card */}
-          <Card className="bg-gradient-to-br from-white/50 to-white/30 dark:from-white/10 dark:to-white/5 backdrop-blur-xl border border-white/20 dark:border-white/10 hover:border-white/40 dark:hover:border-white/20 shadow-lg hover:shadow-2xl hover:shadow-purple-500/10 transition-spring animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-            <CardHeader className="pb-8 border-b border-white/10">
-              <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">Spending Thresholds</CardTitle>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-3">Define what counts as a "micro" transaction</p>
-            </CardHeader>
-            <CardContent className="pt-8">
-              {mounted ? (
-                <div className="space-y-7">
-                  <div>
-                    <label className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-4 block">
-                      What amount feels small to you?
-                    </label>
-                    <div className="flex items-center gap-3">
-                      <span className="text-lg font-bold text-gray-700 dark:text-gray-300">₦</span>
-                      <div className="flex-1 relative">
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          value={microThreshold}
-                          onChange={(e) => handleMicroThresholdChange(e.target.value)}
-                          onBlur={handleMicroThresholdBlur}
-                          className="w-full px-5 py-3 rounded-xl bg-white/50 dark:bg-white/5 border border-white/30 dark:border-white/10 focus:border-white/50 dark:focus:border-white/20 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:ring-offset-0 transition-spring font-semibold text-lg"
-                        />
-                        {showConfirmation && (
-                          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 animate-fade-in-up">
-                            <Check className="w-5 h-5 text-green-500 dark:text-green-400" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-3 leading-relaxed">
-                      Transactions below this amount will be highlighted as micro payments, helping you notice small recurring drains
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div className="h-24 bg-gradient-to-r from-gray-200/40 to-gray-100/40 dark:from-white/10 dark:to-white/5 rounded-lg loading-pulse" />
-              )}
-            </CardContent>
-          </Card>
-
-          {/* About Card */}
-          <Card className="bg-gradient-to-br from-white/50 to-white/30 dark:from-white/10 dark:to-white/5 backdrop-blur-xl border border-white/20 dark:border-white/10 hover:border-white/40 dark:hover:border-white/20 shadow-lg hover:shadow-2xl hover:shadow-green-500/10 transition-spring animate-fade-in-up" style={{ animationDelay: '150ms' }}>
-            <CardHeader className="pb-8 border-b border-white/10">
-              <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">About SpendLens</CardTitle>
-            </CardHeader>
-            <CardContent className="pt-8">
-              <div className="grid grid-cols-2 gap-6 mb-8">
-                <div className="p-4 rounded-xl bg-gradient-to-br from-blue-50/50 to-blue-50/30 dark:from-blue-950/30 dark:to-blue-950/10 border border-blue-100/50 dark:border-blue-900/20 animate-fade-in-up group hover:shadow-lg hover:shadow-blue-500/20 transition-spring hover:border-blue-200/50 dark:hover:border-blue-800/30" style={{ animationDelay: '200ms' }}>
-                  <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">Version</p>
-                  <p className="font-bold text-gray-900 dark:text-white text-lg">1.0.0</p>
-                </div>
-                <div className="p-4 rounded-xl bg-gradient-to-br from-green-50/50 to-green-50/30 dark:from-green-950/30 dark:to-green-950/10 border border-green-100/50 dark:border-green-900/20 animate-fade-in-up group hover:shadow-lg hover:shadow-green-500/20 transition-spring hover:border-green-200/50 dark:hover:border-green-800/30" style={{ animationDelay: '250ms' }}>
-                  <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">Status</p>
-                  <p className="font-bold text-green-600 dark:text-green-400 text-lg">Active</p>
-                </div>
-              </div>
-              <div className="p-5 rounded-xl bg-gradient-to-br from-white/40 to-white/20 dark:from-white/10 dark:to-white/5 border border-white/20 dark:border-white/10 hover:border-white/30 dark:hover:border-white/20 transition-spring animate-fade-in-up" style={{ animationDelay: '300ms' }}>
-                <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
-                  <span className="font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text">SpendLens</span> is your intelligent financial companion, analyzing email transactions to detect vendors, categorize spending patterns, and alert you to silent spending drains before they accumulate.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+    <div className="page active">
+      {/* Page Header */}
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">Settings</h1>
+          <p className="page-sub">Customize your experience</p>
         </div>
       </div>
-    </main>
+
+      {/* Appearance Section */}
+      <div className="settings-section">
+        <div className="settings-head">
+          <div>
+            <div className="settings-title">Appearance</div>
+            <div className="settings-desc">Choose your preferred color scheme</div>
+          </div>
+        </div>
+        <div className="settings-body">
+          {mounted ? (
+            <div className="theme-grid">
+              {themes.map((t, idx) => (
+                <button
+                  key={t.value}
+                  onClick={() => setTheme(t.value)}
+                  className={`theme-opt ${theme === t.value ? 'active' : ''}`}
+                >
+                  {t.value === 'light' ? (
+                    <svg className="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="5" />
+                      <line x1="12" y1="1" x2="12" y2="3" />
+                      <line x1="12" y1="21" x2="12" y2="23" />
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                      <line x1="1" y1="12" x2="3" y2="12" />
+                      <line x1="21" y1="12" x2="23" y2="12" />
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                  ) : t.value === 'dark' ? (
+                    <svg className="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                  ) : (
+                    <svg className="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                      <line x1="2" y1="20" x2="22" y2="20" />
+                    </svg>
+                  )}
+                  <span>{t.label}</span>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div style={{ height: '80px', background: 'var(--surface2)', borderRadius: '8px' }} />
+          )}
+        </div>
+      </div>
+
+      {/* Threshold Section */}
+      <div className="settings-section">
+        <div className="settings-head">
+          <div>
+            <div className="settings-title">Micro Transaction Threshold</div>
+            <div className="settings-desc">Define what counts as a small transaction</div>
+          </div>
+        </div>
+        <div className="settings-body">
+          {mounted ? (
+            <div>
+              <label className="field-label">Amount (₦)</label>
+              <input
+                type="text"
+                inputMode="numeric"
+                value={microThresholdInput}
+                onChange={(e) => handleMicroThresholdChange(e.target.value)}
+                onBlur={handleMicroThresholdBlur}
+                className="field-input"
+                placeholder="2000"
+              />
+              <div className="field-hint">
+                Amounts below this threshold will be marked as micro transactions
+              </div>
+              {showConfirmation && (
+                <div style={{ marginTop: '8px', color: 'var(--green)', fontSize: '12px' }}>
+                  ✓ Threshold updated
+                </div>
+              )}
+            </div>
+          ) : (
+            <div style={{ height: '80px', background: 'var(--surface2)', borderRadius: '8px' }} />
+          )}
+        </div>
+      </div>
+
+      {/* About Section */}
+      <div className="settings-section">
+        <div className="settings-head">
+          <div>
+            <div className="settings-title">About SpendLens</div>
+            <div className="settings-desc">Learn more about this app</div>
+          </div>
+        </div>
+        <div className="settings-body">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+            <div style={{ padding: '12px', borderRadius: '8px', background: 'var(--surface2)', border: '1px solid var(--border-soft)' }}>
+              <div style={{ fontSize: '10px', fontFamily: "'DM Mono', monospace", color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>Version</div>
+              <div style={{ fontSize: '14px', fontWeight: 'bold', color: 'var(--paper)' }}>1.0.0</div>
+            </div>
+            <div style={{ padding: '12px', borderRadius: '8px', background: 'var(--surface2)', border: '1px solid var(--border-soft)' }}>
+              <div style={{ fontSize: '10px', fontFamily: "'DM Mono', monospace", color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>Status</div>
+              <div style={{ fontSize: '14px', fontWeight: 'bold', color: 'var(--green)' }}>Active</div>
+            </div>
+          </div>
+          <div style={{ padding: '12px', borderRadius: '8px', background: 'var(--surface2)', border: '1px solid var(--border-soft)', color: 'var(--muted)', lineHeight: '1.6', fontSize: '13px' }}>
+            <span style={{ fontWeight: 'bold', color: 'var(--accent)' }}>SpendLens</span> analyzes your email transactions to detect vendors, categorize spending, and alert you to silent drains.
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function SettingsPage() {
+  return (
+    <ProtectedRoute>
+      <SettingsPageContent />
+    </ProtectedRoute>
   )
 }

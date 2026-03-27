@@ -2,8 +2,6 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { BarChart3, Home, Settings, Wallet } from 'lucide-react'
-import { ThemeToggle } from '@/components/theme-toggle'
 
 export default function BottomNav() {
   const pathname = usePathname()
@@ -11,51 +9,56 @@ export default function BottomNav() {
   const isActive = (path: string) => pathname === path
 
   const navItems = [
-    { href: '/', label: 'Home', icon: Home },
-    { href: '/transactions', label: 'Transactions', icon: Wallet },
-    { href: '/analytics', label: 'Analytics', icon: BarChart3 },
-    { href: '/settings', label: 'Settings', icon: Settings },
+    { 
+      href: '/', 
+      label: 'Home', 
+      icon: (
+        <svg className="nav-icon" viewBox="0 0 24 24">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      )
+    },
+    { 
+      href: '/transactions', 
+      label: 'Transactions', 
+      icon: (
+        <svg className="nav-icon" viewBox="0 0 24 24">
+          <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+        </svg>
+      )
+    },
+    { 
+      href: '/analytics', 
+      label: 'Analytics', 
+      icon: (
+        <svg className="nav-icon" viewBox="0 0 24 24">
+          <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+      )
+    },
+    { 
+      href: '/settings', 
+      label: 'Settings', 
+      icon: (
+        <svg className="nav-icon" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      )
+    },
   ]
 
   return (
-    <>
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 backdrop-blur-xl bg-white/40 dark:bg-slate-900/40 border-t border-white/50 dark:border-white/10">
-        <div className="max-w-full px-2 sm:px-4 py-2">
-          <div className="flex items-center justify-between gap-1">
-            {/* Nav Items */}
-            <div className="flex gap-1 flex-1">
-              {navItems.map(({ href, label, icon: Icon }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className={`flex-1 flex flex-col items-center justify-center gap-1 px-2 py-2 rounded-xl transition-smooth group ${
-                    isActive(href)
-                      ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/20'
-                      : 'text-gray-600 dark:text-gray-400 hover:bg-white/30 dark:hover:bg-white/5'
-                  }`}
-                >
-                  <Icon className={`transition-transform duration-300 ${
-                    isActive(href) ? 'w-6 h-6' : 'w-5 h-5 group-hover:scale-110'
-                  }`} />
-                  <span className={`text-xs font-semibold transition-colors ${
-                    isActive(href) 
-                      ? 'text-white' 
-                      : 'text-gray-600 dark:text-gray-400'
-                  }`}>
-                    {label}
-                  </span>
-                </Link>
-              ))}
-            </div>
-
-            {/* Theme Toggle */}
-            <div className="ml-1 flex-shrink-0">
-              <ThemeToggle />
-            </div>
-          </div>
-        </div>
-      </nav>
-    </>
+    <nav className="nav-bar">
+      {navItems.map(({ href, label, icon }) => (
+        <Link
+          key={href}
+          href={href}
+          className={`nav-item ${isActive(href) ? 'active' : ''}`}
+        >
+          {icon}
+          <span className="nav-label">{label}</span>
+        </Link>
+      ))}
+    </nav>
   )
 }

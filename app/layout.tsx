@@ -1,12 +1,16 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Playfair_Display, DM_Mono, DM_Sans, Space_Grotesk, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
-import BottomNav from '@/components/navigation/bottom-nav'
+import { AuthProvider } from '@/context/AuthContext'
+import { SettingsProvider } from '@/context/SettingsContext'
+import { AppLayout } from '@/components/app-layout'
 import './globals.css'
-
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
+const dmMono = DM_Mono({ subsets: ["latin"], variable: "--font-dm-mono", weight: ["300", "400", "500"] });
+const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", weight: ["300", "400", "500"] });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk", weight: ["400", "500", "700"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", weight: ["300", "400", "500", "600"] });
 
 export const metadata: Metadata = {
   title: 'SpendLens',
@@ -37,12 +41,19 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="font-sans antialiased bg-gradient-to-br from-white to-blue-50/30 dark:bg-gradient-to-br dark:from-black dark:to-blue-950/5 text-black dark:text-white pb-24 md:pb-20">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <BottomNav />
-          {children}
-        </ThemeProvider>
+    <html lang="en" suppressHydrationWarning className={`${playfair.variable} ${dmMono.variable} ${dmSans.variable} ${spaceGrotesk.variable} ${inter.variable}`}>
+      <head>
+      </head>
+      <body>
+        <AuthProvider>
+          <SettingsProvider>
+            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+              <AppLayout>
+                {children}
+              </AppLayout>
+            </ThemeProvider>
+          </SettingsProvider>
+        </AuthProvider>
         <Analytics />
       </body>
     </html>
