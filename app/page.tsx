@@ -107,7 +107,7 @@ export default function Page() {
   // Show login page if not authenticated
   if (!isAuthenticated) {
     return (
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', height: '100vh', background: 'var(--ink)', overflow: 'hidden', '@media (maxWidth: 1024px)': { gridTemplateColumns: '1fr' } }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 h-screen overflow-hidden" style={{ background: 'var(--ink)' }}>
         {/* Left Panel */}
         <div className="hidden lg:flex flex-col justify-between relative border-r" style={{ borderColor: 'var(--border)', paddingLeft: '56px', paddingRight: '56px', paddingTop: '48px', paddingBottom: '48px' }}>
           {/* Vertical decorative lines */}
@@ -177,12 +177,12 @@ export default function Page() {
         </div>
 
         {/* Right Panel */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '48px 56px', position: 'relative' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 'clamp(28px, 8vw, 56px)', position: 'relative' }}>
           {/* Background glow */}
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 60% at 60% 50%, rgba(200, 169, 110, 0.04) 0%, transparent 70%)', pointerEvents: 'none' }}></div>
 
           {/* Auth Card */}
-          <div style={{ width: '100%', maxWidth: '400px', background: 'rgba(245, 240, 232, 0.03)', border: '1px solid var(--border)', borderRadius: '2px', padding: '52px 44px', position: 'relative', zIndex: 10, animation: 'fadeUp 0.7s ease 0.3s forwards', opacity: 0 }}>
+          <div style={{ width: '100%', maxWidth: '400px', background: 'rgba(245, 240, 232, 0.03)', border: '1px solid var(--border)', borderRadius: '2px', padding: 'clamp(32px, 6vw, 52px) clamp(28px, 5vw, 44px)', position: 'relative', zIndex: 10, animation: 'fadeUp 0.7s ease 0.3s forwards', opacity: 0 }}>
             {/* Corner accents */}
             <div style={{ position: 'absolute', top: '-1px', left: '-1px', width: '16px', height: '16px', borderTop: '2px solid var(--accent)', borderLeft: '2px solid var(--accent)' }}></div>
             <div style={{ position: 'absolute', bottom: '-1px', right: '-1px', width: '16px', height: '16px', borderBottom: '2px solid var(--accent)', borderRight: '2px solid var(--accent)' }}></div>
@@ -190,7 +190,7 @@ export default function Page() {
             <p style={{ fontFamily: 'var(--font-inter)', fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '18px' }}>
               Secure access
             </p>
-            <h2 style={{ fontFamily: 'var(--font-space-grotesk)', fontSize: '32px', fontWeight: 700, lineHeight: 1.1, color: 'var(--paper)', marginBottom: '10px' }}>
+            <h2 style={{ fontFamily: 'var(--font-space-grotesk)', fontSize: 'clamp(24px, 6vw, 32px)', fontWeight: 700, lineHeight: 1.1, color: 'var(--paper)', marginBottom: '10px' }}>
               Sign in to<br />SpendLens
             </h2>
             <p style={{ fontSize: '13.5px', fontWeight: 300, color: 'var(--muted)', lineHeight: 1.6, marginBottom: '40px' }}>
@@ -253,7 +253,7 @@ export default function Page() {
           </div>
 
           {/* Footer Note */}
-          <p style={{ position: 'absolute', bottom: '48px', fontFamily: 'var(--font-inter)', fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(107, 101, 96, 0.5)', textAlign: 'center', animation: 'fadeUp 0.6s ease 0.6s forwards', opacity: 0 }}>
+          <p style={{ position: 'absolute', bottom: 'clamp(24px, 4vw, 48px)', fontFamily: 'var(--font-inter)', fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(107, 101, 96, 0.5)', textAlign: 'center', animation: 'fadeUp 0.6s ease 0.6s forwards', opacity: 0, maxWidth: '90%', left: '50%', transform: 'translateX(-50%)' }}>
             Your spending patterns analyzed · Your data secured
           </p>
         </div>
