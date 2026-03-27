@@ -159,7 +159,7 @@ export default function Page() {
             {/* Stats */}
             <div style={{ display: 'flex', gap: '40px' }}>
               {[
-                { num: '₦0', label: 'stored passwords' },
+                { num: '0', label: 'stored passwords' },
                 { num: '2s', label: 'to connect Gmail' },
                 { num: '100%', label: 'your data' }
               ].map((stat, i) => (

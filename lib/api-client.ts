@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8000'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 export const ApiClient = {
   async get(path: string, token?: string) {
@@ -58,5 +58,5 @@ export const ApiClient = {
 }
 
 export function getGoogleLoginUrl(): string {
-  return 'http://localhost:8000/auth/login'
+  return `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/auth/login`
 }
