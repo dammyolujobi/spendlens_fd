@@ -3,7 +3,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 export const ApiClient = {
   async get(path: string, token?: string) {
     const authToken = token || localStorage.getItem('access_token')
-    console.log('[ApiClient.get]', { path, hasToken: !!token, hasLocalStorage: !!localStorage.getItem('access_token'), authTokenShort: authToken?.slice(0, 30) + '...' })
+    console.log('[ApiClient.get]', { path, hasToken: !!token, hasLocalStorage: !!localStorage.getItem('access_token') + '...' })
     const res = await fetch(`${API_BASE_URL}${path}`, {
       method: 'GET',
       headers: {
