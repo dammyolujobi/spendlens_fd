@@ -97,9 +97,19 @@ body::before {
 
 .page {
   display: none;
-  padding: 40px 28px 28px;
+  padding: 16px 12px 28px;
   min-height: calc(100vh - var(--nav-h));
   animation: pageIn 0.35s ease forwards;
+}
+@media (min-width: 640px) {
+  .page {
+    padding: 28px 20px 28px;
+  }
+}
+@media (min-width: 1024px) {
+  .page {
+    padding: 40px 28px 28px;
+  }
 }
 .page.active { display: block; }
 
@@ -172,28 +182,60 @@ html.light .nav-bar {
    PAGE HEADER
 ══════════════════════════════════ */
 .page-header {
-  margin-bottom: 32px;
+  margin-bottom: 20px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
 }
+@media (min-width: 640px) {
+  .page-header {
+    margin-bottom: 24px;
+  }
+}
+@media (min-width: 1024px) {
+  .page-header {
+    margin-bottom: 32px;
+  }
+}
 
 .page-title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 34px;
+  font-size: 22px;
   font-weight: 700;
   line-height: 1;
   color: var(--paper);
   letter-spacing: -0.02em;
 }
+@media (min-width: 640px) {
+  .page-title {
+    font-size: 28px;
+  }
+}
+@media (min-width: 1024px) {
+  .page-title {
+    font-size: 34px;
+  }
+}
 
 .page-sub {
-  font-size: 12.5px;
+  font-size: 11px;
   color: var(--muted);
-  margin-top: 6px;
+  margin-top: 4px;
   font-weight: 300;
   font-family: 'Inter', sans-serif;
   letter-spacing: 0.05em;
+}
+@media (min-width: 640px) {
+  .page-sub {
+    font-size: 12px;
+    margin-top: 5px;
+  }
+}
+@media (min-width: 1024px) {
+  .page-sub {
+    font-size: 12.5px;
+    margin-top: 6px;
+  }
 }
 
 /* ══════════════════════════════════
@@ -201,27 +243,51 @@ html.light .nav-bar {
 ══════════════════════════════════ */
 .period-filter {
   display: flex;
+  flex-wrap: wrap;
   gap: 2px;
   background: var(--surface2);
   border: 1px solid var(--border-soft);
   border-radius: 6px;
   padding: 3px;
-  margin-bottom: 28px;
-  width: fit-content;
+  margin-bottom: 20px;
+  width: auto;
+}
+@media (min-width: 640px) {
+  .period-filter {
+    margin-bottom: 24px;
+  }
+}
+@media (min-width: 1024px) {
+  .period-filter {
+    margin-bottom: 28px;
+  }
 }
 
 .period-btn {
-  padding: 7px 16px;
+  padding: 5px 10px;
   border-radius: 4px;
   border: none;
   background: none;
   color: var(--muted);
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 9px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
+}
+@media (min-width: 640px) {
+  .period-btn {
+    padding: 6px 13px;
+    font-size: 10px;
+  }
+}
+@media (min-width: 1024px) {
+  .period-btn {
+    padding: 7px 16px;
+    font-size: 11px;
+  }
 }
 
 .period-btn:hover { color: var(--paper-dim); }
@@ -233,19 +299,41 @@ html.light .nav-bar {
 .stat-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 28px;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+@media (min-width: 640px) {
+  .stat-grid {
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+}
+@media (min-width: 1024px) {
+  .stat-grid {
+    gap: 14px;
+    margin-bottom: 28px;
+  }
 }
 
 .stat-card {
   background: linear-gradient(135deg, var(--surface) 0%, rgba(24, 24, 27, 0.5) 100%);
   border: 1px solid var(--border-soft);
   border-radius: 12px;
-  padding: 24px 22px;
+  padding: 16px;
   position: relative;
   overflow: hidden;
   transition: all 0.2s ease;
   box-shadow: inset 0 0 20px rgba(200, 169, 110, 0.05);
+}
+@media (min-width: 640px) {
+  .stat-card {
+    padding: 20px;
+  }
+}
+@media (min-width: 1024px) {
+  .stat-card {
+    padding: 24px 22px;
+  }
 }
 
 html.light .stat-card {
@@ -264,28 +352,52 @@ html.light .stat-card:hover {
 
 .stat-label {
   font-family: 'Inter', sans-serif;
-  font-size: 9.5px;
+  font-size: 8px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   font-weight: 600;
+}
+@media (min-width: 640px) {
+  .stat-label {
+    font-size: 9px;
+    margin-bottom: 12px;
+  }
+}
+@media (min-width: 1024px) {
+  .stat-label {
+    font-size: 9.5px;
+    margin-bottom: 14px;
+  }
 }
 
 .stat-amount {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.02em;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+}
+@media (min-width: 640px) {
+  .stat-amount {
+    font-size: 24px;
+    margin-bottom: 7px;
+  }
+}
+@media (min-width: 1024px) {
+  .stat-amount {
+    font-size: 30px;
+    margin-bottom: 8px;
+  }
 }
 
 .stat-card.spent .stat-amount { color: var(--red); }
 .stat-card.received .stat-amount { color: var(--green); }
 
 .stat-meta {
-  font-size: 11.5px;
+  font-size: 10px;
   color: var(--muted);
   font-weight: 300;
 }

@@ -95,18 +95,18 @@ export default function SpendingChart({ transactions }: Props) {
 
   return (
     <Card className="bg-gradient-to-br from-white/50 to-white/30 dark:from-white/10 dark:to-white/5 backdrop-blur-xl border border-white/20 dark:border-white/10 hover:border-white/40 dark:hover:border-white/20 shadow-lg hover:shadow-2xl hover:shadow-purple-500/10 transition-spring">
-      <CardContent className="p-8 sm:p-10 space-y-8">
+      <CardContent className="p-4 sm:p-6 md:p-8 lg:p-10 space-y-4 sm:space-y-6 md:space-y-8">
         {chartData.length > 0 ? (
           <>
             {/* Header */}
             <div className="animate-fade-in-up">
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">Top Spending</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Vendors consuming your budget</p>
+              <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">Top Spending</h3>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Vendors consuming your budget</p>
             </div>
 
             {/* Bar Chart */}
-            <div className="w-full animate-fade-in-up" style={{ animationDelay: '50ms' }}>
-              <ResponsiveContainer width="100%" height={typeof window !== 'undefined' && window.innerWidth >= 1536 ? 320 : typeof window !== 'undefined' && window.innerWidth >= 1024 ? 280 : 240}>
+            <div className="w-full animate-fade-in-up overflow-x-auto" style={{ animationDelay: '50ms' }}>
+              <ResponsiveContainer width="100%" height={typeof window !== 'undefined' && window.innerWidth >= 1536 ? 280 : typeof window !== 'undefined' && window.innerWidth >= 1024 ? 240 : typeof window !== 'undefined' && window.innerWidth >= 640 ? 200 : 180}>
                 <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <XAxis 
                     dataKey="name" 
@@ -133,30 +133,30 @@ export default function SpendingChart({ transactions }: Props) {
             <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/10" />
 
             {/* Vendor List with Spending Bars */}
-            <div className="space-y-4 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+            <div className="space-y-2 sm:space-y-3 md:space-y-4 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
               <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Top Vendors Breakdown</p>
-              <div className="space-y-4">
+              <div className="space-y-2 sm:space-y-3 md:space-y-4">
                 {chartData.map((item, idx) => {
                   const barWidth = (item.value / maxAmount) * 100
                   return (
                     <div 
                       key={item.vendor} 
-                      className="group p-4 rounded-xl bg-white/30 dark:bg-white/5 hover:bg-white/50 dark:hover:bg-white/10 border border-white/10 dark:border-white/5 hover:border-white/20 dark:hover:border-white/15 transition-spring animate-fade-in-up cursor-default"
+                      className="group p-3 sm:p-4 rounded-lg sm:rounded-xl bg-white/30 dark:bg-white/5 hover:bg-white/50 dark:hover:bg-white/10 border border-white/10 dark:border-white/5 hover:border-white/20 dark:hover:border-white/15 transition-spring animate-fade-in-up cursor-default"
                       style={{ animationDelay: `${150 + idx * 50}ms` }}
                     >
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3">
+                      <div className="space-y-2 sm:space-y-3">
+                        <div className="flex items-center gap-2 sm:gap-3">
                           <VendorAvatar vendor={item.vendor} />
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold truncate text-gray-900 dark:text-white group-hover:text-color transition-colors">{item.vendor}</p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">{item.count} transaction{item.count !== 1 ? 's' : ''}</p>
+                            <p className="text-xs sm:text-sm font-semibold truncate text-gray-900 dark:text-white group-hover:text-color transition-colors">{item.vendor}</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">{item.count} txn{item.count !== 1 ? 's' : ''}</p>
                           </div>
                           <div className="text-right flex-shrink-0">
-                            <p className="text-sm font-bold text-gray-900 dark:text-white group-hover:text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text transition-all">₦{item.value.toLocaleString()}</p>
+                            <p className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white group-hover:text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text transition-all">₦{item.value.toLocaleString().slice(0, 20)}</p>
                           </div>
                         </div>
                         {/* Enhanced spending bar */}
-                        <div className="h-2 bg-white/20 dark:bg-white/10 rounded-full overflow-hidden">
+                        <div className="h-1.5 sm:h-2 bg-white/20 dark:bg-white/10 rounded-full overflow-hidden">
                           <div 
                             className="h-full rounded-full transition-all duration-700 ease-out shadow-lg shadow-blue-500/30 group-hover:shadow-blue-500/50"
                             style={{ 

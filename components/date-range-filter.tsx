@@ -18,12 +18,12 @@ export default function DateRangeFilter({ selectedRange, onRangeChange }: DateRa
   ]
 
   return (
-    <div className="inline-flex bg-white/20 dark:bg-white/10 rounded-lg p-1.5 mb-6 animate-fade-in-up">
+    <div className="flex flex-wrap gap-2 bg-white/20 dark:bg-white/10 rounded-lg p-1.5 mb-6 animate-fade-in-up">
       {ranges.map((range, idx) => (
         <button
           key={range.value}
           onClick={() => onRangeChange(range.value)}
-          className={`px-6 py-2.5 text-base font-semibold transition-spring relative group ${
+          className={`px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-2.5 text-xs sm:text-sm md:text-base font-semibold transition-spring relative group whitespace-nowrap ${
             selectedRange === range.value
               ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-md shadow-lg'
               : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
